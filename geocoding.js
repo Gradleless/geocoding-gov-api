@@ -1,7 +1,6 @@
 class Geocoding {
     constructor() {
         this.uri = "https://api-adresse.data.gouv.fr/";
-        this.axios = require("axios");
     }
 
     /**
@@ -40,7 +39,8 @@ class Geocoding {
      * @param {string} long - decimal degrees
      */
     async getPos(lat, long) {
-        const res = (await this.axios.get(this.uri + "reverse/?" + `lon=${long}&lat=${lat}`)).data;
+        const response = await fetch(this.uri + "reverse/?" + `lon=${long}&lat=${lat}`);
+        const res = await response.json();
         if(res.features.length === 0) return console.log("Found nothing");
 
         return {
@@ -62,7 +62,8 @@ class Geocoding {
      */
     async searchPos(search, limit = 100, autocomplete = 1, lat = null, lon = null, type = null, postcode = null, citycode = null ) {
         if(typeof search != "string") return console.log("It must be a string value !");
-        const res = (await this.axios.get(this.uri + "search/" + `?q=${search}&limit=${limit}&autocomplete=${autocomplete}&lat=${lat}&lon=${lon}&type=${type}&postcode=${postcode}&citycode=${citycode}`)).data;
+        const response = await fetch(this.uri + "search/" + `?q=${search}&limit=${limit}&autocomplete=${autocomplete}&lat=${lat}&lon=${lon}&type=${type}&postcode=${postcode}&citycode=${citycode}`);
+        const res = await response.json();
         if(res.features.length === 0) return console.log("Found nothing");
 
         if(res.features.length === 1) return {
