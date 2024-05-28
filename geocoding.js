@@ -40,7 +40,6 @@ class Geocoding {
      * @param {string} long - decimal degrees
      */
     async getPos(lat, long) {
-        if(typeof lat != "string" || typeof long != "string") return console.log("Values must be strings");
         const res = (await this.axios.get(this.uri + "reverse/?" + `lon=${long}&lat=${lat}`)).data;
         if(res.features.length === 0) return console.log("Found nothing");
 
